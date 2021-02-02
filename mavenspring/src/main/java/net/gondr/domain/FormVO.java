@@ -1,9 +1,10 @@
 package net.gondr.domain;
 
-public class UserVO {
+public class FormVO {
 	private String userid;
 	private String password;
-	private String username;
+	private String name;
+	private String password_ok;
 	
 	public String getUserid() {
 		return userid;
@@ -20,13 +21,20 @@ public class UserVO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public String getUsername() {
-		return username;
+	
+	public String getName() {
+		return name;
 	}
-
-	public void setUsername(String username) {
-		this.username = username;
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getPassword_ok() {
+		return password_ok;
+	}
+	public void setPassword_ok(String password_ok) {
+		this.password_ok = password_ok;
 	}
 	
 }
