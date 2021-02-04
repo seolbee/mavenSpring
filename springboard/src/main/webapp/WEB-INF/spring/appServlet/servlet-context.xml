@@ -45,4 +45,18 @@
 	</beans:bean>
 	
 	<default-servlet-handler/>
+	<!-- 인터셉터 등록 -->
+	<beans:bean id="authInter" class="net.gondr.interceptor.AuthInter"></beans:bean>
+	<beans:bean id="noneAuthInter" class="net.gondr.interceptor.NoneAuthInter"></beans:bean>
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/user/register"/>
+			<beans:ref bean="noneAuthInter"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/user/logout"/>
+			<beans:ref bean="authInter"/>
+		</interceptor>
+	</interceptors>
 </beans:beans>

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.gondr.dao.UserDAO;
+import net.gondr.domain.LoginDTO;
 import net.gondr.domain.UserVO;
 
 @Repository
@@ -24,5 +25,20 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void register(UserVO user) {
 		dao.insertUser(user);
+	}
+	
+	@Override
+	public void updateLevel(String userid, String password) {
+		dao.updateLevel(userid, password);
+	}
+	
+	@Override
+	public int selectLevel(int level) {
+		return dao.selectLevel(level);
+	}
+	
+	@Override
+	public void updateEXP(String userid, String password) {
+		dao.updateEXP(userid, password);
 	}
 }

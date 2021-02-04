@@ -37,4 +37,15 @@ public class UserDAOTest {
 		UserVO user = dao.loginUser("gondr", "1234");
 		System.out.println(user);
 	}
+	
+	@Test
+	public void testLevel() throws Exception{
+		dao.updateLevel("gondr", "1234");
+	}
+	
+	@Test
+	public void testLevelView() throws Exception{
+		UserVO user = dao.getUser("gondr");
+		System.out.println(user);
+	}
 }
