@@ -50,6 +50,14 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     		<param-value>UTF-8</param-value>
     	</init-param>
     </filter>
+    <filter>
+    	<filter-name>lucy</filter-name>
+    	<filter-class>com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter</filter-class>
+    </filter>
+    <filter-mapping>
+    	<filter-name>lucy</filter-name>
+    	<url-pattern>/board/write</url-pattern>
+    </filter-mapping>
     <!-- 모든 url에 해당 인코딩 필터가 동작하도롱 맵핑 -->
     <filter-mapping>
     	<filter-name>encodingFilter</filter-name>

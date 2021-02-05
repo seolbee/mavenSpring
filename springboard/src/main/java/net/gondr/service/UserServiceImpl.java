@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.gondr.dao.UserDAO;
-import net.gondr.domain.LoginDTO;
 import net.gondr.domain.UserVO;
 
 @Repository

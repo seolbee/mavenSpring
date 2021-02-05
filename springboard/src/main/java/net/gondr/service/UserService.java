@@ -1,6 +1,5 @@
 package net.gondr.service;
 
-import net.gondr.domain.LoginDTO;
 import net.gondr.domain.UserVO;
 
 public interface UserService {
