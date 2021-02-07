@@ -22,6 +22,8 @@ import net.gondr.domain.BoardVO;
 import net.gondr.domain.UploadResponse;
 import net.gondr.domain.UserVO;
 import net.gondr.service.BoardService;
+import net.gondr.service.LevelService;
+import net.gondr.service.UserService;
 import net.gondr.util.FileUtil;
 import net.gondr.util.MediaUtil;
 import net.gondr.validator.BoardValidator;
@@ -34,7 +36,14 @@ public class BoardController {
 	private ServletContext context;
 	
 	@Autowired
-	private BoardService service;
+	private BoardService boardservice;
+	
+	@Autowired
+	private LevelService levelservice;
+	
+	@Autowired
+	private UserService userservice;
+	
 	
 	private BoardValidator validator = new BoardValidator();
 	
@@ -56,7 +65,13 @@ public class BoardController {
 		LucyXssFilter filter = XssSaxFilter.getInstance("lucy-xss-sax.xml");
 		String clean = filter.doFilter(board.getContent());
 		board.setContent(clean);
-		service.writeArticle(board);
+		boardservice.writeArticle(board);
+		
+		int exp = levelservice.selectLevel(user.getLevel());
+		if(user.getExp() + 5 >= exp) levelservice.updateLevel(user.getUserid());
+		else levelservice.updateEXP(user.getUserid(), 5);
+		user = userservice.getUserInfo(user.getUserid());
+		session.setAttribute("user", user);
 		return "redirect:/board";
 	}
 	
@@ -88,6 +103,10 @@ public class BoardController {
 	
 	@RequestMapping(value="view/{id}", method=RequestMethod.GET)
 	public String viewArticle(@PathVariable Integer id, Model model) {
+		BoardVO board = boardservice.viewArticle(id);
+		model.addAttribute("board", board);
 		return "board/view";
 	}
+	
+	
 }

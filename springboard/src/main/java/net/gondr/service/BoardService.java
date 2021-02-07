@@ -3,6 +3,7 @@ package net.gondr.service;
 import java.util.List;
 
 import net.gondr.domain.BoardVO;
+import net.gondr.domain.UserVO;
 
 public interface BoardService {
 	public void writeArticle(BoardVO board);

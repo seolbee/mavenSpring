@@ -1,6 +1,7 @@
 package net.gondr.controller;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import net.gondr.domain.LoginDTO;
 import net.gondr.domain.RegisterDTO;
 import net.gondr.domain.UserVO;
+import net.gondr.service.LevelService;
 import net.gondr.service.UserService;
 import net.gondr.util.FileUtil;
 import net.gondr.validator.RegisterValidator;
@@ -23,7 +25,10 @@ import net.gondr.validator.RegisterValidator;
 public class UserController {
 	
 	@Autowired
-	private UserService service;
+	private UserService userservice;
+	
+	@Autowired
+	private LevelService levelservice;
 	
 	@Autowired
 	private ServletContext context;
@@ -56,31 +61,32 @@ public class UserController {
 		user.setPassword(registerDTO.getPassword());
 		user.setUserid(registerDTO.getUserid());
 		
-		service.register(user);
+		userservice.register(user);
 		
 		return "redirect:/";
 	}
 	
 	@RequestMapping(value="login", method=RequestMethod.POST)
-	public String userLogin(LoginDTO loginDTO, HttpSession session, Model model) {
+	public String userLogin(LoginDTO loginDTO, HttpSession session, Model model, Cookie[] cookie) {
 		
-		if(loginDTO.getUserid() == null || loginDTO.getPassword().isEmpty()) {
+		if(loginDTO.getUserid().isEmpty() || loginDTO.getPassword().isEmpty()) {
 			model.addAttribute("msg", "로그인 실패, 아이디와 비밀번호를 입력하세요");
 			return "user/login";
 		}
 		
-		UserVO user = service.login(loginDTO.getUserid(), loginDTO.getPassword());
+		UserVO user = userservice.login(loginDTO.getUserid(), loginDTO.getPassword());
 		
 		if(user == null) {
-			model.addAttribute("msg", "로그인 실패, 아이디나 비밀번호가 틀렸습니다.");
+			model.addAttribute("msg", "로그인 실패, 아이디와 비밀번호가 틀립니다.");
 			return "user/login";
 		}
 		
-		int exp = service.selectLevel(user.getLevel());
-		if((user.getExp() + 5) >= exp) service.updateLevel(loginDTO.getUserid(), loginDTO.getPassword());
-		else service.updateEXP(loginDTO.getUserid(), loginDTO.getPassword());
+		int exp = levelservice.selectLevel(user.getLevel());
+		if((user.getExp() + 5) >= exp) levelservice.updateLevel(loginDTO.getUserid());
+		else levelservice.updateEXP(loginDTO.getUserid(), 5);
 		
-		user = service.login(loginDTO.getUserid(), loginDTO.getPassword());
+		user = userservice.login(loginDTO.getUserid(), loginDTO.getPassword());
+		
 		session.setAttribute("user", user);
 		
 		return "redirect:/";

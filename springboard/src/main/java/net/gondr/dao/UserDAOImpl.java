@@ -35,25 +35,4 @@ public class UserDAOImpl implements UserDAO{
 		loginMap.put("password", password);
 		return session.selectOne(ns+".loginUser", loginMap);
 	}
-	
-	@Override
-	public void updateLevel(String userid, String password) {
-		Map<String, String> loginMap = new HashMap<>();
-		loginMap.put("userid", userid);
-		loginMap.put("password", password);
-		session.update(ns+".updateLevel", loginMap);
-	}
-	
-	@Override
-	public int selectLevel(int level) {
-		return session.selectOne(ns+".selectLevel", level);
-	}
-	
-	@Override
-	public void updateEXP(String userid, String password) {
-		Map<String, String> loginMap = new HashMap<>();
-		loginMap.put("userid", userid);
-		loginMap.put("password", password);
-		session.update(ns+".updateEXP", loginMap);
-	}
 }

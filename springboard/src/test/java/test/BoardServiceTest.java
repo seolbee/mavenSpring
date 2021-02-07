@@ -17,15 +17,15 @@ public class BoardServiceTest {
 	@Autowired
 	BoardService service;
 	
-	@Test
-	public void writeBoardTest() {
-		BoardVO board = new BoardVO();
-		board.setTitle("이번에도 테스트");
-		board.setContent("이번에도 테스트 내용입니다. 테스트 테스트");
-		board.setWriter("gondr");
-		
-		service.writeArticle(board);
-	}
+//	@Test
+//	public void writeBoardTest() {
+//		BoardVO board = new BoardVO();
+//		board.setTitle("이번에도 테스트");
+//		board.setContent("이번에도 테스트 내용입니다. 테스트 테스트");
+//		board.setWriter("gondr");
+//		
+//		service.writeArticle(board);
+//	}
 	
 	@Test
 	public void viewArticle() {

@@ -9,35 +9,20 @@ import net.gondr.domain.UserVO;
 @Repository
 public class UserServiceImpl implements UserService{
 	@Autowired
-	private UserDAO dao;
+	private UserDAO userDAO;
 	
 	@Override
 	public UserVO getUserInfo(String userid) {
-		return dao.getUser(userid);
+		return userDAO.getUser(userid);
 	}
 	
 	@Override
 	public UserVO login(String userid, String password) {
-		return dao.loginUser(userid, password);
+		return userDAO.loginUser(userid, password);
 	}
 	
 	@Override
 	public void register(UserVO user) {
-		dao.insertUser(user);
-	}
-	
-	@Override
-	public void updateLevel(String userid, String password) {
-		dao.updateLevel(userid, password);
-	}
-	
-	@Override
-	public int selectLevel(int level) {
-		return dao.selectLevel(level);
-	}
-	
-	@Override
-	public void updateEXP(String userid, String password) {
-		dao.updateEXP(userid, password);
+		userDAO.insertUser(user);
 	}
 }

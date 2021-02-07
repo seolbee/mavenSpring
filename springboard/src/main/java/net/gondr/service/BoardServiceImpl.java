@@ -6,41 +6,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.gondr.dao.BoardDAO;
+import net.gondr.dao.LevelDAO;
+import net.gondr.dao.UserDAO;
 import net.gondr.domain.BoardVO;
+import net.gondr.domain.UserVO;
 
 @Service
 public class BoardServiceImpl implements BoardService{
 	@Autowired
-	private BoardDAO dao;
+	private BoardDAO boardDAO;
 	
 	@Override
 	public void writeArticle(BoardVO board) {
-		dao.write(board);
-		
+		boardDAO.write(board);
 	}
 	
 	@Override
 	public BoardVO viewArticle(Integer id) {
-		return dao.view(id);
+		return boardDAO.view(id);
 	}
 	
 	@Override
 	public List<BoardVO> getArticleList(Integer start, Integer cnt) {
-		return dao.list(start, cnt);
+		return boardDAO.list(start, cnt);
 	}
 	
 	@Override
 	public void updateArticle(BoardVO board) {
-		dao.update(board);
+		boardDAO.update(board);
 	}
 	
 	@Override
 	public void deleteArticle(Integer id) {
-		dao.delete(id);
+		boardDAO.delete(id);
 	}
 	
 	@Override
 	public Integer countArticle() {
-		return dao.getCnt();
+		return boardDAO.getCnt();
 	}
 }
