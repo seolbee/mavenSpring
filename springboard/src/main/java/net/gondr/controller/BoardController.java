@@ -1,5 +1,7 @@
 package net.gondr.controller;
 
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,6 +21,7 @@ import com.nhncorp.lucy.security.xss.LucyXssFilter;
 import com.nhncorp.lucy.security.xss.XssSaxFilter;
 
 import net.gondr.domain.BoardVO;
+import net.gondr.domain.Criteria;
 import net.gondr.domain.UploadResponse;
 import net.gondr.domain.UserVO;
 import net.gondr.service.BoardService;
@@ -72,7 +75,7 @@ public class BoardController {
 		else levelservice.updateEXP(user.getUserid(), 5);
 		user = userservice.getUserInfo(user.getUserid());
 		session.setAttribute("user", user);
-		return "redirect:/board";
+		return "redirect:/board/list";
 	}
 	
 	@RequestMapping(value="upload", method=RequestMethod.POST)
@@ -108,5 +111,44 @@ public class BoardController {
 		return "board/view";
 	}
 	
+	@RequestMapping(value="list", method=RequestMethod.GET)
+	public String viewList(Criteria c, Model model) {
+		//List<BoardVO> list = boardservice.getArticleList((c.getPage() - 1) * c.getPerPageNum(), c.getPerPageNum());
+		List<BoardVO> list = boardservice.getCriteriaList(c);
+		model.addAttribute("list", list);
+		Integer cnt = boardservice.countCriteria(c);
+		c.calculate(cnt);
+		model.addAttribute("c", c);
+		return "board/list";
+	}
 	
+	@RequestMapping(value="edit/{id}", method=RequestMethod.GET)
+	public String viewEdit(@PathVariable Integer id, Model model, HttpSession session) {
+		BoardVO temp = boardservice.viewArticle(id);
+		UserVO user = (UserVO) session.getAttribute("user");
+		if(!temp.getWriter().equals(user.getUserid())){
+			
+		}
+		model.addAttribute("boardVO", temp);
+		return "board/edit";
+	}
+	
+	@RequestMapping(value="delete/{id}", method=RequestMethod.GET)
+	public String delete(@PathVariable Integer id) {
+		boardservice.deleteArticle(id);
+		return "redirect:/board/list/";
+	}
+	
+	@RequestMapping(value="edit", method=RequestMethod.POST)
+	public String editProcess(BoardVO board, Errors errors) {
+		validator.validate(board, errors);
+		if(errors.hasErrors()) {
+			return "board/edit";
+		}
+		LucyXssFilter filter = XssSaxFilter.getInstance("lucy-xss-sax.xml");
+		String clean = filter.doFilter(board.getContent());
+		board.setContent(clean);
+		boardservice.updateArticle(board);
+		return "redirect:/board/view/"+board.getId();
+	}
 }

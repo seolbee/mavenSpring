@@ -9,6 +9,7 @@ import net.gondr.dao.BoardDAO;
 import net.gondr.dao.LevelDAO;
 import net.gondr.dao.UserDAO;
 import net.gondr.domain.BoardVO;
+import net.gondr.domain.Criteria;
 import net.gondr.domain.UserVO;
 
 @Service
@@ -32,6 +33,11 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
+	public List<BoardVO> getCriteriaList(Criteria c) {
+		return boardDAO.list(c);
+	}
+	
+	@Override
 	public void updateArticle(BoardVO board) {
 		boardDAO.update(board);
 	}
@@ -44,5 +50,10 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public Integer countArticle() {
 		return boardDAO.getCnt();
+	}
+	
+	@Override
+	public Integer countCriteria(Criteria c) {
+		return boardDAO.getCnt(c);
 	}
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.gondr.domain.BoardVO;
+import net.gondr.domain.Criteria;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO{
@@ -30,9 +31,14 @@ public class BoardDAOImpl implements BoardDAO{
 	@Override
 	public List<BoardVO> list(Integer start, Integer cnt) {
 		Map<String, Integer> paramMap = new HashMap<>();
-		paramMap.put("start", start);
-		paramMap.put("cnt", cnt);
+		paramMap.put("pageStart", start);
+		paramMap.put("perPageNum", cnt);
 		return session.selectList(ns+".list", paramMap);
+	}
+	
+	@Override
+	public List<BoardVO> list(Criteria c) {
+		return session.selectList(ns + ".list", c);
 	}
 	
 	@Override
@@ -48,5 +54,10 @@ public class BoardDAOImpl implements BoardDAO{
 	@Override
 	public Integer getCnt() {
 		return session.selectOne(ns+".cnt");
+	}
+	
+	@Override
+	public Integer getCnt(Criteria c) {
+		return session.selectOne(ns + ".cnt", c);
 	}
 }
